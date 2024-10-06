@@ -1,22 +1,50 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 export default function ExpenseForm({ setExpenses }) {
-  const [expense, setExpense] = useState({
-    title: "",
-    category: "",
-    amount: "",
-  });
+  // const [expense, setExpense] = useState({
+  //   title: "",
+  //   category: "",
+  //   amount: "",
+  // });
+
+  const titleRef = useRef();
+  const categoryRef = useRef();
+  const amountRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault(); // it stops from page reload
     // e.target.reset();  // it don't work here due to one way data binding we don't update the screen until we don't update the state. (Unidirectional Data Flow)
-    console.log(expense);
-    setExpenses((prevState) => [...prevState, {...expense, id: crypto.randomUUID() }]);
-    setExpense({
-      title: "",
-      category: "",
-      amount: "",
-    })
+    // console.log(expense);
+    // setExpenses((prevState) => [...prevState, {...expense, id: crypto.randomUUID() }]);
+    // setExpense({
+    //   title: "",
+    //   category: "",
+    //   amount: "",
+    // })
+
+    // to check and console the values
+    // console.log({
+    //   title: titleRef.current.value,
+    //   category: categoryRef.current.value,
+    //   amount: amountRef.current.value,
+    //   id: crypto.randomUUID(),
+    // });
+    setExpenses((prevState) => [
+      ...prevState,
+      {
+        title: titleRef.current.value,
+        category: categoryRef.current.value,
+        amount: amountRef.current.value,
+        id: crypto.randomUUID(),
+      },
+    ]);
+    // reset the input and select fields
+    // setExpense({
+    //   title: "",
+    //   category: "",
+    //   amount: "",
+    //   id: "",
+    // })
   };
 
   return (
@@ -26,8 +54,11 @@ export default function ExpenseForm({ setExpenses }) {
         <input
           id="title"
           name="title"
-          value={expense.title}
-          onChange={(e) => setExpense((prevState) => ({ ...prevState, title: e.target.value }))}
+          // value={expense.title}
+          // onChange={(e) =>
+          //   setExpense((prevState) => ({ ...prevState, title: e.target.value }))
+          // }
+          ref={titleRef}
         />
       </div>
       <div className="input-container">
@@ -35,8 +66,14 @@ export default function ExpenseForm({ setExpenses }) {
         <select
           id="category"
           name="category"
-          value={expense.category}
-          onChange={(e) => setExpense((prevState) => ({ ...prevState, category: e.target.value }))}
+          // value={expense.category}
+          // onChange={(e) =>
+          //   setExpense((prevState) => ({
+          //     ...prevState,
+          //     category: e.target.value,
+          //   }))
+          // }
+          ref={categoryRef}
         >
           <option value="" hidden>
             Select Category
@@ -53,8 +90,14 @@ export default function ExpenseForm({ setExpenses }) {
         <input
           id="amount"
           name="amount"
-          value={expense.amount}
-          onChange={(e) => setExpense((prevState) => ({ ...prevState, amount : e.target.value }))}
+          // value={expense.amount}
+          // onChange={(e) =>
+          //   setExpense((prevState) => ({
+          //     ...prevState,
+          //     amount: e.target.value,
+          //   }))
+          // }
+          ref={amountRef}
         />
       </div>
       <button className="add-btn">Add</button>
